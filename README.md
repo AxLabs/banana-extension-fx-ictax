@@ -1,4 +1,4 @@
-# banana-ictax-fx
+# Banana ICTAX FX Extension
 
 Banana Plus extension to export FX requests from selected transactions and import ICTAX CHF exchange rates.
 
