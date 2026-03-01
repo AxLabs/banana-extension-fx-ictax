@@ -1,0 +1,25 @@
+{
+  "schema": "axlabs.ictax.fx.rates.v1",
+  "base": "CHF",
+  "source": "ICTAX",
+  "rates": [
+    {
+      "date": "2026-02-10",
+      "currency": "EUR",
+      "rate": "0.9543",
+      "multiplier": "1"
+    },
+    {
+      "date": "2026-02-11",
+      "currency": "USD",
+      "rate": "0.91905",
+      "multiplier": "1"
+    },
+    {
+      "date": "2026-02-11",
+      "currency": "JPY",
+      "rate": "0.6121",
+      "multiplier": "100"
+    }
+  ]
+}

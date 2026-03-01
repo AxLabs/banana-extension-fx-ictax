@@ -1,64 +1,34 @@
-# Banana ICTAX FX Extension
+# banana-ictax-fx (Banana package, two menu commands)
 
-Banana Plus extension to export FX requests from selected transactions and import ICTAX CHF exchange rates.
+This repository contains a **Banana Accounting Plus package extension (.sbaa)** that provides **two separate menu commands**:
 
-## What it does
+- **Export ICTAX FX requests from selected Transactions**
+- **Import ICTAX FX rates output (upsert ExchangeRates)**
 
-This single Banana extension provides two actions:
+## Why a package?
+A Banana `.sbaa` package can contain **multiple commands** but installs as a single extension.
 
-- **Export**: From selected rows in `Transactions`, it exports unique `(date, currency)` pairs (skipping CHF and common crypto tickers) into a JSON requests file.
-- **Import**: Reads a JSON rates output file produced by your ICTAX script and **upserts** rows in Banana’s `ExchangeRates` table with `CurrencyReference = CHF`, preserving ICTAX multipliers.
+## Build the .sbaa package
+This repo includes:
+- `ch.axlabs.banana.ictax-fx.qrc` (Qt Resource Collection)
+- `ch.axlabs.banana.ictax-fx.manifest.json` (package metadata)
+- the JS command files listed in the `.qrc`
+
+Compile the `.qrc` into a `.sbaa` using the Qt `rcc` tool (Banana documents this workflow for packaged extensions).
+
+## Install in Banana
+Banana → Extensions → Manage Extensions → Add from file… → select the generated `.sbaa`.
+
+After installing, you’ll see **two commands** in the Extensions menu.
 
 ## Workflow
-
-1. In Banana, open the **Transactions** table and select the rows you want.
-2. Run the extension and choose **YES** to **Export**.
-3. Run your external ICTAX script (manual step) to convert the requests file into a rates output JSON file.
-4. Run the extension again and choose **NO** to **Import**.
+1. In Banana, open **Transactions**, select the rows you want.
+2. Run **Export ICTAX FX requests…** → saves `ictax_fx_requests.json`.
+3. Run your external ICTAX script manually to produce `ictax_fx_rates.json`.
+4. Run **Import ICTAX FX rates…** → pick the output file → updates `ExchangeRates` (CHF reference), preserving ICTAX multipliers.
 
 ## File formats
-
-### Requests (exported)
-
-```json
-{
-  "schema": "axlabs.ictax.fx.requests.v1",
-  "base": "CHF",
-  "generatedAt": "2026-02-27T23:00:00+01:00",
-  "requests": [
-    {"date": "2026-02-10", "currency": "EUR"},
-    {"date": "2026-02-11", "currency": "USD"}
-  ]
-}
-```
-
-### Rates output (imported)
-
-```json
-{
-  "schema": "axlabs.ictax.fx.rates.v1",
-  "base": "CHF",
-  "source": "ICTAX",
-  "rates": [
-    {"date": "2026-02-10", "currency": "EUR", "rate": "0.9543", "multiplier": "1"},
-    {"date": "2026-02-11", "currency": "JPY", "rate": "0.6121", "multiplier": "100"}
-  ]
-}
-```
-
-**Meaning**: `rate` is CHF per `multiplier` units of the foreign currency (as provided by ICTAX).
-
-## Install (Banana)
-
-- Banana Plus → **Extensions** → **Manage Extensions** → **Add from URL**
-- Point it to the raw URL of `banana-ictax-fx.js` in your GitHub repo.
-
-## Safety notes
-
-- Import refuses invalid payloads and duplicates.
-- Import updates only `ExchangeRates` rows with `CurrencyReference = CHF`.
-- Optional “write back to Transactions” is disabled by default in the script (`UPDATE_SELECTED_TRANSACTIONS = false`).
+See `examples/requests.example.json` and `examples/rates.example.json`.
 
 ## License
-
 MIT

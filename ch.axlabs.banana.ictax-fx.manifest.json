@@ -1,0 +1,12 @@
+{
+  "category": "productivity",
+  "country": "switzerland",
+  "countryCode": "ch",
+  "language": "en",
+  "publisher": "AxLabs",
+  "title": "ICTAX FX helper (CHF)",
+  "title.en": "ICTAX FX helper (CHF)",
+  "description": "Export FX requests from selected transactions and import ICTAX CHF exchange rates.",
+  "description.en": "Export FX requests from selected transactions and import ICTAX CHF exchange rates.",
+  "version": "0.2.0"
+}

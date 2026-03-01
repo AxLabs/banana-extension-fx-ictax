@@ -1,0 +1,19 @@
+{
+  "schema": "axlabs.ictax.fx.requests.v1",
+  "base": "CHF",
+  "generatedAt": "2026-02-28T10:00:00+01:00",
+  "requests": [
+    {
+      "date": "2026-02-10",
+      "currency": "EUR"
+    },
+    {
+      "date": "2026-02-11",
+      "currency": "USD"
+    },
+    {
+      "date": "2026-02-11",
+      "currency": "JPY"
+    }
+  ]
+}
