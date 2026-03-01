@@ -12,6 +12,11 @@ on:
         required: false
         default: false
         type: boolean
+      verify_manifest_version:
+        description: "Fail if manifest.json version != input version"
+        required: false
+        default: true
+        type: boolean
 
 permissions:
   contents: write
@@ -31,11 +36,34 @@ jobs:
             exit 1
           fi
           echo "TAG=v$VERSION" >> "$GITHUB_ENV"
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
 
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0  # needed to create tags safely
+
+      - name: Verify manifest.json version matches input (optional)
+        if: ${{ inputs.verify_manifest_version }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f manifest.json
+
+          # Extract the first JSON string value for the "version" key.
+          MANIFEST_VERSION="$(sed -n 's/.*"version"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' manifest.json | head -n 1)"
+
+          if [ -z "$MANIFEST_VERSION" ]; then
+            echo "Could not extract version from manifest.json"
+            exit 1
+          fi
+
+          if [ "$MANIFEST_VERSION" != "$VERSION" ]; then
+            echo "manifest.json version '$MANIFEST_VERSION' does not match input version '$VERSION'"
+            exit 1
+          fi
+
+          echo "OK: manifest.json version matches."
 
       - name: Ensure tag does not already exist
         shell: bash

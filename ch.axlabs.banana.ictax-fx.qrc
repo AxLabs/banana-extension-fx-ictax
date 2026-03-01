@@ -1,6 +1,6 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
-  <file alias="manifest.json">ch.axlabs.banana.ictax-fx.manifest.json</file>
+  <file>manifest.json</file>
   <file>axlabs_banana_ictax_fx_common.js</file>
   <file>ch.axlabs.banana.fx.ictax.export.js</file>
   <file>ch.axlabs.banana.fx.ictax.import.js</file>
