@@ -1,4 +1,5 @@
 {
+  "id": "ch.axlabs.banana.ictax-fx",
   "category": "productivity",
   "country": "switzerland",
   "countryCode": "ch",
@@ -8,5 +9,5 @@
   "title.en": "ICTAX FX helper (CHF)",
   "description": "Export FX requests from selected transactions and import ICTAX CHF exchange rates.",
   "description.en": "Export FX requests from selected transactions and import ICTAX CHF exchange rates.",
-  "version": "0.2.1"
+  "version": "0.2.2"
 }
