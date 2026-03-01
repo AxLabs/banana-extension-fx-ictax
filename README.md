@@ -11,13 +11,28 @@ A Banana `.sbaa` package can contain **multiple commands** but installs as a sin
 ## Build the .sbaa package
 This repo includes:
 - `ch.axlabs.banana.ictax-fx.qrc` (Qt Resource Collection)
-- `ch.axlabs.banana.ictax-fx.manifest.json` (package metadata)
+- `manifest.json` (package metadata)
 - the JS command files listed in the `.qrc`
 
 Compile the `.qrc` into a `.sbaa` using the Qt `rcc` tool (Banana documents this workflow for packaged extensions).
 
 ## Install in Banana
-Banana → Extensions → Manage Extensions → Add from file… → select the generated `.sbaa`.
+
+You have two options:
+
+### Option A: Install from URL (recommended)
+
+Banana → Extensions → Manage Extensions → **Add from URL…**
+
+Use this stable URL (always points to the latest release):
+
+- https://github.com/AxLabs/banana-extension-fx-ictax/releases/latest/download/ch.axlabs.banana.ictax-fx.sbaa
+
+Then you can enable **Automatically update** so Banana keeps the extension up to date.
+
+### Option B: Install from file
+
+Banana → Extensions → Manage Extensions → **Add from file…** → select the generated `.sbaa`.
 
 After installing, you’ll see **two commands** in the Extensions menu.
 
