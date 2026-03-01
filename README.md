@@ -11,10 +11,17 @@ A Banana `.sbaa` package can contain **multiple commands** but installs as a sin
 ## Build the .sbaa package
 This repo includes:
 - `ch.axlabs.banana.ictax-fx.qrc` (Qt Resource Collection)
-- `manifest.json` (package metadata)
+- `ch.axlabs.banana.ictax-fx.manifest.json` (bundled as `manifest.json` in package)
 - the JS command files listed in the `.qrc`
 
-Compile the `.qrc` into a `.sbaa` using the Qt `rcc` tool (Banana documents this workflow for packaged extensions).
+Build is now driven by **CMake**, which invokes Qt `rcc` under the hood to produce the `.sbaa` package defined by the `.qrc`.
+
+```bash
+make
+# or directly:
+cmake -S . -B build
+cmake --build build --target package
+```
 
 ## Install in Banana
 

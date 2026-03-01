@@ -48,22 +48,23 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test -f manifest.json
+          MANIFEST_FILE="ch.axlabs.banana.ictax-fx.manifest.json"
+          test -f "$MANIFEST_FILE"
 
           # Extract the first JSON string value for the "version" key.
-          MANIFEST_VERSION="$(sed -n 's/.*"version"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' manifest.json | head -n 1)"
+          MANIFEST_VERSION="$(sed -n 's/.*"version"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' "$MANIFEST_FILE" | head -n 1)"
 
           if [ -z "$MANIFEST_VERSION" ]; then
-            echo "Could not extract version from manifest.json"
+            echo "Could not extract version from $MANIFEST_FILE"
             exit 1
           fi
 
           if [ "$MANIFEST_VERSION" != "$VERSION" ]; then
-            echo "manifest.json version '$MANIFEST_VERSION' does not match input version '$VERSION'"
+            echo "$MANIFEST_FILE version '$MANIFEST_VERSION' does not match input version '$VERSION'"
             exit 1
           fi
 
-          echo "OK: manifest.json version matches."
+          echo "OK: $MANIFEST_FILE version matches."
 
       - name: Ensure tag does not already exist
         shell: bash

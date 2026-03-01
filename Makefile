@@ -1,13 +1,14 @@
 # Banana ICTAX FX packaged extension builder
-# Builds a .sbaa from the .qrc using Qt's rcc.
+# Uses CMake as the build entry point.
 
 QRC            := ch.axlabs.banana.ictax-fx.qrc
 DIST_DIR       := dist
 PACKAGE_NAME   := ch.axlabs.banana.ictax-fx.sbaa
+BUILD_DIR      := build
 
 # Allow overriding, e.g.:
-#   make RCC=/usr/local/opt/qttools/bin/rcc
-RCC ?= rcc
+#   make RCC=/opt/homebrew/opt/qt/bin/rcc
+RCC ?=
 
 # ---- Docker build (no local Qt/rcc needed) ----
 DOCKER_IMAGE ?= banana-ictax-fx-builder
@@ -21,17 +22,25 @@ all: build
 doctor:
 	@echo "QRC: $(QRC)"
 	@echo "RCC: $(RCC)"
-	@command -v "$(RCC)" >/dev/null 2>&1 || (echo "ERROR: rcc not found. Install Qt tools (see DEVELOPMENT.md) or set RCC=/path/to/rcc"; exit 1)
 	@test -f "$(QRC)" || (echo "ERROR: $(QRC) not found in repo root"; exit 1)
-	@echo "OK: rcc found and QRC present."
+	@command -v cmake >/dev/null 2>&1 || (echo "ERROR: cmake not found."; exit 1)
+	@if [ -n "$(RCC)" ] && [ ! -x "$(RCC)" ]; then \
+		echo "ERROR: RCC path is not executable: $(RCC)"; \
+		exit 1; \
+	fi
+	@echo "OK: cmake found and QRC present."
 
 build: doctor
-	@mkdir -p "$(DIST_DIR)"
-	@"$(RCC)" -binary -o "$(DIST_DIR)/$(PACKAGE_NAME)" "$(QRC)"
+	@cmake -S . -B "$(BUILD_DIR)" \
+		-DQRC="$(QRC)" \
+		-DPACKAGE_NAME="$(PACKAGE_NAME)" \
+		-DDIST_DIR="$(abspath $(DIST_DIR))" \
+		$(if $(RCC),-DRCC_EXECUTABLE="$(RCC)",)
+	@cmake --build "$(BUILD_DIR)" --target package
 	@echo "Built: $(DIST_DIR)/$(PACKAGE_NAME)"
 
 clean:
-	@rm -rf "$(DIST_DIR)"
+	@rm -rf "$(DIST_DIR)" "$(BUILD_DIR)"
 
 distclean: clean
 
